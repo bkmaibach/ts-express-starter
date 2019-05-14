@@ -14,7 +14,6 @@ import expressValidator from "express-validator";
 import bluebird from "bluebird";
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 import cookieParser from "cookie-parser";
-import * as bot from "./bot/bot";
 
 const MongoStore = mongo(session);
 
@@ -25,7 +24,6 @@ dotenv.config({ path: ".env" });
 import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
 import * as contactController from "./controllers/contact";
-import * as assignmentController from "./controllers/assignment";
 
 
 // API keys and Passport configuration
@@ -95,11 +93,6 @@ app.use(
  */
 app.get("/", homeController.index);
 
-app.post("/", passportConfig.isAuthenticated, assignmentController.postHome);
-app.get("/assignments", assignmentController.getAssignments);
-app.delete("/assignments", assignmentController.deleteAssignment);
-app.put("/assignments", assignmentController.putAssignment);
-
 app.get("/login", userController.getLogin);
 app.post("/login", userController.postLogin);
 app.get("/logout", userController.logout);
@@ -128,7 +121,6 @@ app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRe
 /**
  * OAuth authentication routes. (Sign in)
  */
-bot.init();
 
 
 export default app;

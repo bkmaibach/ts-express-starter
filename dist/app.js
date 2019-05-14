@@ -25,7 +25,6 @@ const express_validator_1 = __importDefault(require("express-validator"));
 const bluebird_1 = __importDefault(require("bluebird"));
 const secrets_1 = require("./util/secrets");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const bot = __importStar(require("./bot/bot"));
 const MongoStore = connect_mongo_1.default(express_session_1.default);
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv_1.default.config({ path: ".env" });
@@ -33,7 +32,6 @@ dotenv_1.default.config({ path: ".env" });
 const homeController = __importStar(require("./controllers/home"));
 const userController = __importStar(require("./controllers/user"));
 const contactController = __importStar(require("./controllers/contact"));
-const assignmentController = __importStar(require("./controllers/assignment"));
 // API keys and Passport configuration
 const passportConfig = __importStar(require("./config/passport"));
 // Create Express server
@@ -92,10 +90,6 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "public"), { max
  * Primary app routes.
  */
 app.get("/", homeController.index);
-app.post("/", passportConfig.isAuthenticated, assignmentController.postHome);
-app.get("/assignments", assignmentController.getAssignments);
-app.delete("/assignments", assignmentController.deleteAssignment);
-app.put("/assignments", assignmentController.putAssignment);
 app.get("/login", userController.getLogin);
 app.post("/login", userController.postLogin);
 app.get("/logout", userController.logout);
@@ -122,6 +116,5 @@ app.get("/auth/facebook/callback", passport_1.default.authenticate("facebook", {
 /**
  * OAuth authentication routes. (Sign in)
  */
-bot.init();
 exports.default = app;
 //# sourceMappingURL=app.js.map
